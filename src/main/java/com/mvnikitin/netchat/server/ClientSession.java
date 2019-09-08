@@ -1,5 +1,8 @@
 package com.mvnikitin.netchat.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -16,6 +19,8 @@ public class ClientSession implements Runnable{
     private String user;
 
     private BlackList blackList;
+
+    private static final Logger logger = LogManager.getLogger(ClientSession.class.getName());
 
     public String getUser() {
         return user;
@@ -60,6 +65,7 @@ public class ClientSession implements Runnable{
                         register(firstMessage);
                         break;
                     default:
+                        logger.warn("Incorrect command.");
                         sendMessage("Incorrect command.");
                 }
 
@@ -80,9 +86,8 @@ public class ClientSession implements Runnable{
                 switch (commandString[0]) {
                     case "/end":
                         isLogedOff = true;
+                        logger.info("User " + user + " disconnected.");
                         out.writeUTF("/serverClosed");
-                        System.out.println("User " + user +
-                                " disconnected.");
                         break;
                     case "/w":
                         sendPrivateMessage(messageReceived);
@@ -103,23 +108,28 @@ public class ClientSession implements Runnable{
             }
         } catch (IOException e) {
             e.printStackTrace();
+            logger.error(e.getMessage());
         } catch (SQLException e) {
             e.printStackTrace();
+            logger.error(e.getMessage());
         } finally {
             try {
                 in.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                logger.error(e.getMessage());
             }
             try {
                 out.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                logger.error(e.getMessage());
             }
             try {
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                logger.error(e.getMessage());
             }
 
             server.closeClientSession(ClientSession.this);
@@ -132,6 +142,7 @@ public class ClientSession implements Runnable{
             out.writeUTF(message);
         } catch (IOException e) {
             e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
@@ -155,9 +166,7 @@ public class ClientSession implements Runnable{
 
             sendMessage("/authok " + tokens[1] + " " + user);
             server.openClientSession(ClientSession.this);
-
-            System.out.println("User " + user +
-                    " connected.");
+            logger.info("User " + user + " connected.");
         }
 
         return res;
@@ -169,12 +178,18 @@ public class ClientSession implements Runnable{
 
         if (RegService.register(tokens[1], tokens[2], tokens[3])) {
             sendMessage(tokens[1] + " (username " + tokens[2] +
-                    ") successfully resistered.\n" +
+                    ") successfully registered.\n" +
                     "Welcome to the chat!");
+            logger.info(tokens[1] + "(username " +
+                    tokens[2] + ") successfully registered.");
         } else {
-            sendMessage("The user with nick '" + tokens[1] + "' and/or username '" + tokens[2] +
+            sendMessage("The user with nick '" + tokens[1] +
+                    "' and/or username '" + tokens[2] +
                     "' was registered before.\n" +
                     "Please choose other nick and/or username");
+            logger.warn("The user with nick '" + tokens[1] +
+                    "' and/or username '" + tokens[2] +
+                    " is already registered!");
         }
     }
 
