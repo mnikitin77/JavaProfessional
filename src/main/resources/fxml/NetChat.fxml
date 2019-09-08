@@ -11,7 +11,7 @@
 
 <VBox fx:controller="com.mvnikitin.netchat.client.Controller"
       xmlns:fx="http://javafx.com/fxml" alignment="center">
-    <stylesheets><URL value="@css/Style.css"/></stylesheets>
+    <stylesheets><URL value="@../css/Style.css"/></stylesheets>
     <HBox fx:id="upperPanel" alignment="CENTER">
             <TextField HBox.hgrow="ALWAYS" promptText="username" fx:id="loginfield"/>
             <PasswordField HBox.hgrow="ALWAYS" promptText="password" fx:id="passwordfiled" onAction="#authorize" />

@@ -27,7 +27,7 @@ public class ProductsDB {
 
         try {
             productsDB = new ProductsDB(
-                    "src\\main\\java\\com\\mvnikitin\\lesson2\\lesson2.db");
+                    "target\\classes\\data\\lesson2.db");
             scanner = new Scanner(System.in);
 
             boolean isExit = false;

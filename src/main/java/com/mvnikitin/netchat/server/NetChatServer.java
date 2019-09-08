@@ -31,7 +31,7 @@ public class NetChatServer {
 
         try {
             DataService.connect("org.sqlite.JDBC",
-                    "jdbc:sqlite:src\\main\\java\\com\\mvnikitin\\netchatusers");
+                    "jdbc:sqlite:target\\classes\\data\\netchatusers");
 
             server = new ServerSocket(10050);
             System.out.println("Сервер запущен!");

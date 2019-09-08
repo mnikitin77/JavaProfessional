@@ -15,7 +15,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("NetChat.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NetChat.fxml"));
         Parent root = loader.load();
         primaryStage.setTitle("-~=* Super Chat *=~-");
         primaryStage.setScene(new Scene(root, 640, 720));

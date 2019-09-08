@@ -26,7 +26,7 @@ public class DBCreation {
         DBCreation db = null;
 
         try {
-            db = new DBCreation("src\\main\\java\\com\\mvnikitin\\lesson2\\lesson2.db");
+            db = new DBCreation("target\\classes\\data\\lesson2.db");
             // Задание 1. Сформировать таблицу товаров.
             db.createTable("products");
             db.commit();
