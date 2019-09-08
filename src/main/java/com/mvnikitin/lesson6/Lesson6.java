@@ -26,7 +26,16 @@ public class Lesson6 {
                         source, indexOfLastFound + 1, source.length);
     }
 
-    public int dummy () {
-        return 5;
+    public boolean isArrayContainDigit(int[] array, int[] digits) {
+
+        for(int i = 0; i < array.length; i++) {
+            for (int j = 0; j < digits.length; j++) {
+                if (array[i] == digits[j]) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
