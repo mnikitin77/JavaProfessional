@@ -1,5 +1,8 @@
 package com.mvnikitin.netchat.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,6 +18,8 @@ public class NetChatServer {
 
     private Map<String, ClientSession> clientSessions;
     private ExecutorService executorService;
+
+    private static final Logger logger = LogManager.getLogger(NetChatServer.class.getName());
 
     public NetChatServer() {
         clientSessions = new ConcurrentHashMap<>();
@@ -34,7 +39,7 @@ public class NetChatServer {
                     "jdbc:sqlite:target\\classes\\data\\netchatusers");
 
             server = new ServerSocket(10050);
-            System.out.println("Сервер запущен!");
+            logger.info("Сервер запущен!");
 
             while (true) {
                 socket = server.accept();
@@ -42,19 +47,23 @@ public class NetChatServer {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            logger.error(e.getMessage());
         } catch (SQLException e) {
             e.printStackTrace();
+            logger.error(e.getMessage());
         } finally {
             try {
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                logger.error(e.getMessage());
             }
 
             try {
                 server.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                logger.error(e.getMessage());
             }
 
             executorService.shutdown();
