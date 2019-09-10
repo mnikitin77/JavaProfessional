@@ -8,6 +8,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TestRunner {
+
+    public static final Class PRETEST_ANNOTATION = BeforeSuite.class;
+    public static final Class POSTTEST_ANNOTATION = AfterSuite.class;
+    public static final Class TEST_ANNOTATION = Test.class;
+
     public static void start(Class cls) {
         Object testClass;
 
@@ -18,13 +23,13 @@ public class TestRunner {
             executeAuxilliaries(testClass,
                     getMarkedMethods(
                             testClass.getClass().getMethods(),
-                            BeforeSuite.class),
-                    BeforeSuite.class);
+                            PRETEST_ANNOTATION),
+                    PRETEST_ANNOTATION);
 
         // Run tests (@Test) by priority
             Method[] tests = getMarkedMethods(
                     testClass.getClass().getMethods(),
-                    Test.class);
+                    TEST_ANNOTATION);
 
             // Sorting test methods by priority
             Arrays.sort(tests, (t1, t2) ->
@@ -39,8 +44,8 @@ public class TestRunner {
             executeAuxilliaries(testClass,
                     getMarkedMethods(
                             testClass.getClass().getMethods(),
-                            AfterSuite.class),
-                    AfterSuite.class);
+                            POSTTEST_ANNOTATION),
+                    POSTTEST_ANNOTATION);
 
         } catch (InstantiationException |
                 IllegalAccessException |
